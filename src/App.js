@@ -1,11 +1,11 @@
-import logo from './logo.svg';
-import './App.css';
-import SearchComponent from './SearchComponent';
+import logo from "./logo.svg";
+import "./App.css";
+import Search from "./Component/Search";
 
 function App() {
   return (
     <>
-    <SearchComponent />
+      <Search />
     </>
   );
 }

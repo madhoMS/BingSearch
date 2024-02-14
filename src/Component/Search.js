@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const SearchComponent = () => {
+const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -16,7 +16,9 @@ const SearchComponent = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        setSearchResults(result.data);
+        if (result.statusCode === 200) {
+          setSearchResults(result.data);
+        }
       })
       .catch((error) => console.log("error", error));
   };
@@ -49,4 +51,4 @@ const SearchComponent = () => {
   );
 };
 
-export default SearchComponent;
+export default Search;
