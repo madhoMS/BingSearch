@@ -4,24 +4,21 @@ const SearchComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const apiKey = "YOUR_BING_SEARCH_API_KEY";
-  const endpoint = `https://api.bing.microsoft.com/v7.0/search`;
-
   const handleSearch = async () => {
-    try {
-      const response = await fetch(
-        `${endpoint}?q=${encodeURIComponent(searchTerm)}`,
-        {
-          headers: {
-            "Ocp-Apim-Subscription-Key": apiKey,
-          },
-        }
-      );
-      const data = await response.json();
-      setSearchResults(data.webPages.value);
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    }
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    fetch(
+      `https://localhost:7152/api/Locations/Search?searchParam=${searchTerm}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setSearchResults(result.data);
+      })
+      .catch((error) => console.log("error", error));
   };
 
   return (
@@ -36,7 +33,15 @@ const SearchComponent = () => {
       <ul>
         {searchResults.map((result) => (
           <li key={result.id}>
-            <a href={result.url}>{result.name}</a>
+            <a href={result.link}>{result.title}</a>
+            {result.thumbnail && (
+              <>
+                {" "}
+                <br />
+                <img src={result.thumbnail} alt={result.title} />
+              </>
+            )}
+            <p>{result?.snippet}</p>
           </li>
         ))}
       </ul>
